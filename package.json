@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "mjson",
+  "version": "1.0.0",
+  "description": "JSONをベースとした独自形式の牌譜フォーマットです。",
+  "scripts": {
+    "run": "npx typedoc --options typedoc.config.json"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typedoc": "^0.25.4",
+    "typedoc-plugin-markdown": "^3.17.1"
+  }
+}
