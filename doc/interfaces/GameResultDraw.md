@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / GameResultDraw
+[MJson](../modules.md) / GameResultDraw
 
 # Interface: GameResultDraw
 

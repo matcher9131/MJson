@@ -1,8 +1,10 @@
 {
     "$schema": "https://typedoc.org/schema.json",
-    "entryPoints": ["./types/index.ts"],
+    "entryPoints": ["./typesForDoc/index.ts"],
     "out": "doc",
     "plugin": ["typedoc-plugin-markdown"],
     "name": "MJson",
-    "disableSources": true
+    "disableSources": true,
+    "readme": "none",
+    "entryDocument": "modules.md"
 }

@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventChow
+[MJson](../modules.md) / EventChow
 
 # Interface: EventChow
 

@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventDiscard
+[MJson](../modules.md) / EventDiscard
 
 # Interface: EventDiscard
 

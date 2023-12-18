@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / YakuDoubles
+[MJson](../modules.md) / YakuDoubles
 
 # Interface: YakuDoubles
 

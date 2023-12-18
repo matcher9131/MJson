@@ -2,21 +2,21 @@
  * 役と飜数を示します。
  * @interface
  */
-export type YakuDoubles = ({
+export type YakuDoubles = {
     /**
      * 役のIDを示す数値です。`types/yaku.ts`に対応します。
      * 
-     * このプロパティかyakuのいずれかを指定する必要があります。
+     * このプロパティか{@link yaku}のいずれかを指定する必要があります。
      */
-    yakuId: number;
-} | {
+    yakuId?: number;
+
     /**
      * 役名を示す文字列です。
      * 
-     * このプロパティかyakuIdのいずれかを指定する必要があります。
+     * このプロパティか{@link yakuId}のいずれかを指定する必要があります。
      */
-    yaku: string;
-}) & {
+    yaku?: string;
+
     /**
      * 飜数を示す数値です。
      * 

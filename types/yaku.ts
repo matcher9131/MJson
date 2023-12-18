@@ -68,6 +68,3 @@ const yakuList = [
     "裏ドラ", // 53
     "赤ドラ", // 54
 ] as const;
-
-type YakuName = (typeof yakuList)[number];
-export const getYakuName = (yakuId: number): YakuName => yakuList[yakuId];

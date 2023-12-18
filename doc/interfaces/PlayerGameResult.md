@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / PlayerGameResult
+[MJson](../modules.md) / PlayerGameResult
 
 # Interface: PlayerGameResult
 

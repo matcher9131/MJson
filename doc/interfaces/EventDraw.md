@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventDraw
+[MJson](../modules.md) / EventDraw
 
 # Interface: EventDraw
 

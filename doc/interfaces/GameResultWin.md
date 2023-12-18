@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / GameResultWin
+[MJson](../modules.md) / GameResultWin
 
 # Interface: GameResultWin
 
@@ -90,6 +90,6 @@ ___
 
 ### yakuList
 
-• `Readonly` **yakuList**: readonly [`YakuDoubles`](YakuDoubles.md)[]
+• `Readonly` **yakuList**: readonly `YakuDoubles`[]
 
 役と飜数を示す[YakuDoubles](YakuDoubles.md)の配列です。

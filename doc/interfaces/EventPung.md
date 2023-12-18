@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventPung
+[MJson](../modules.md) / EventPung
 
 # Interface: EventPung
 

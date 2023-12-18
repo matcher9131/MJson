@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventConcealedKong
+[MJson](../modules.md) / EventConcealedKong
 
 # Interface: EventConcealedKong
 

@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / Game
+[MJson](../modules.md) / Game
 
 # Interface: Game
 

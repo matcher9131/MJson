@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / EventAdditionalKong
+[MJson](../modules.md) / EventAdditionalKong
 
 # Interface: EventAdditionalKong
 

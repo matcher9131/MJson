@@ -1,4 +1,4 @@
-[MJson](../README.md) / [Exports](../modules.md) / MJson
+[MJson](../modules.md) / MJson
 
 # Interface: MJson
 
