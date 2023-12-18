@@ -1,4 +1,13 @@
-import { EventItem, EventAdditionalKong, EventChow, EventConcealedKong, EventDiscard, EventDraw, EventOpenKong, EventPung } from "../types/eventItem";
+import {
+    EventItem,
+    EventAdditionalKong,
+    EventChow,
+    EventConcealedKong,
+    EventDiscard,
+    EventDraw,
+    EventOpenKong,
+    EventPung,
+} from "../types/eventItem";
 import { MJson } from "../types/mJson";
 import { Game } from "../types/game";
 import { GameResult, GameResultDraw, GameResultWin } from "../types/gameResult";
@@ -20,5 +29,5 @@ export {
     GameResultDraw,
     GameResultWin,
     PlayerGameResult,
-    YakuDoubles
+    YakuDoubles,
 };
