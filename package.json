@@ -2,6 +2,7 @@
   "private": true,
   "name": "mjson",
   "version": "1.0.0",
+  "type": "module",
   "description": "JSONをベースとした独自形式の牌譜フォーマットです。",
   "scripts": {
     "run": "npx typedoc --options typedoc.config.json"
@@ -9,11 +10,14 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/tsdoc": "^0.14.2",
+    "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard-with-typescript": "^43.0.0",
     "prettier": "^3.1.1",
+    "ts-node": "^10.9.2",
     "typedoc": "^0.25.4",
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.3.3"

@@ -20,7 +20,7 @@ export type PlayerGameResult = {
 
     /**
      * 順位を示す数値です。
-     * 
+     *
      * 0が1位、1が2位、...を示します。
      */
     readonly rank: number;
