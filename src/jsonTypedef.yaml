@@ -1,0 +1,360 @@
+definitions:
+    drawKind:
+        metadata:
+            description: 流局の理由です。
+        enum:
+            - 荒牌平局
+            - 九種九牌
+            - 四家立直
+            - 三家和
+            - 四開槓
+            - 四風連打
+            - 流し満貫
+    eventItem:
+        additionalProperties: true
+        metadata:
+            description: ツモ、打牌、鳴きなどの各行動を示す抽象タイプです。
+            remarks: 共通プロパティ`k`によってどの種別なのかを判断できます。
+            discriminatorDescription: イベントタイプを指定する文字列です。
+        discriminator: k
+        mapping:
+            d:
+                additionalProperties: true
+                metadata:
+                    typeName: EventDiscard
+                    description: 打牌を示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: どの牌を打牌したのかを示す数値です。
+                        type: int32
+                optionalProperties:
+                    isRiichi:
+                        metadata:
+                            description: 打牌時にリーチ宣言をしたかどうかを示します。
+                            remarks: このプロパティが省略されたときは`false`が指定されたものとします。
+                        type: boolean
+            t:
+                additionalProperties: true
+                metadata:
+                    typeName: EventDraw
+                    description: ツモを示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: どの牌をツモしたのかを示す数値です。
+                        type: int32
+            c:
+                additionalProperties: true
+                metadata:
+                    typeName: EventChow
+                    description: チーを示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    from:
+                        metadata:
+                            description: どのプレイヤーの打牌をもらったのかを表す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: もらった牌を示す数値です。
+                        type: int32
+                    tiles:
+                        metadata:
+                            description: 晒した残りの2牌を示す数値の配列です。
+                        elements:
+                            type: int32
+            p:
+                additionalProperties: true
+                metadata:
+                    typeName: EventPung
+                    description: ポンを示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    from:
+                        metadata:
+                            description: どのプレイヤーの打牌をもらったのかを表す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: もらった牌を示す数値です。
+                        type: int32
+                    tiles:
+                        metadata:
+                            description: 晒した残りの2牌を示す数値の配列です。
+                        elements:
+                            type: int32
+            a:
+                additionalProperties: true
+                metadata:
+                    typeName: EventConcealedKong
+                    description: 暗槓を示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    tiles:
+                        metadata:
+                            description: 暗槓を行う4牌を示す数値の配列です。
+                        elements:
+                            type: int32
+            m:
+                additionalProperties: true
+                metadata:
+                    typeName: EventOpenKong
+                    description: 大明槓を示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    from:
+                        metadata:
+                            description: どのプレイヤーの打牌をもらったのかを表す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: もらった牌を示す数値です。
+                        type: int32
+                    tiles:
+                        metadata:
+                            description: 晒した残りの3牌を示す数値の配列です。
+                        elements:
+                            type: int32
+            k:
+                additionalProperties: true
+                metadata:
+                    typeName: EventAdditionalKong
+                    description: 小明槓を示す{@link EventItem}です。
+                properties:
+                    p:
+                        metadata:
+                            description: どのプレイヤーのイベントなのかを示す数値です。
+                        type: int32
+                    t:
+                        metadata:
+                            description: どの牌を加えたのかを示す数値です。
+                        type: int32
+    game:
+        additionalProperties: true
+        metadata:
+            description: 1局を示します。
+        properties:
+            beginningScores:
+                metadata:
+                    description: 局開始時の各プレイヤーの点棒を示す数値の配列です。
+                    remarks: 起家から反時計回りの順で記述します。
+                elements:
+                    type: int32
+            round:
+                metadata:
+                    description: 局を示す数値です。
+                    remarks: 0 = 東1局, 1 = 東2局, 2 = 東3局, 3 = 東4局, 4 = 南1局, ...を示します。
+                type: int32
+            dealerKeepingCount:
+                metadata:
+                    description: 積み棒の本数を示す数値です。
+                type: int32
+            bets:
+                metadata:
+                    description: 局開始時における供託棒の本数を示す数値です。
+                type: int32
+            dora:
+                metadata:
+                    description: ドラ表示牌を示す数値の配列です。
+                    remarks: めくられた枚数分だけ順に記述します。
+                elements:
+                    type: int32
+            dealtTiles:
+                metadata:
+                    description: 各プレイヤーの配牌を示す数値の2次元配列です。
+                    remarks:
+                        - 起家から順に反時計回りに記述します。（すなわち、dealtTiles[0]が起家の配牌、dealtTiles[1]が起家の下家の配牌、...を示します。）
+                        - 親であってもはじめの13枚のみを記述します。
+                elements:
+                    elements:
+                        type: int32
+            events:
+                metadata:
+                    description: 各プレイヤーのツモ、打牌、鳴きなどの行動を表す{@link EventItem}の配列です。
+                    remarks: 親の第一ツモから順に記述します。
+                elements:
+                    ref: eventItem
+            gameResults:
+                metadata:
+                    description: 1局の結果（和了または流局）を示す{@link GameResult}の配列です。
+                    remarks:
+                        - 配列の内容はちょうど1個の{@link GameResultDraw}か、1個以上の{@link GameResultWin}のいずれかのみが許されます。
+                        - 2人以上がロンした場合、放銃者から見て下家となるプレイヤーから順に記述します。
+                elements:
+                    ref: gameResult
+        optionalProperties:
+            hiddenDora:
+                metadata:
+                    description: 裏ドラ表示牌を示す数値の配列です。
+                    remarks:
+                        - めくられた枚数分だけ順に記述します。
+                        - リーチをして和了したプレイヤーがいない場合はこのプロパティを含めないようにします。
+                elements:
+                    type: int32
+    gameResult:
+        additionalProperties: true
+        metadata:
+            description: 1局の結果を示す抽象タイプです。
+            remarks: 共通プロパティ`resultKind`によってどの種別なのかを判断できます。
+            discriminatorDescription: 1局の結果が何であるかを表す文字列です。
+        discriminator: resultKind
+        mapping:
+            win:
+                additionalProperties: true
+                metadata:
+                    typeName: GameResultWin
+                    description: 和了者がいることを示す{@link GameResult}です。
+                properties:
+                    scoreIncrements:
+                        metadata:
+                            description: 和了および流局による点棒の増減（積み棒、供託を含む）を示す数値の配列です。
+                            remarks:
+                                - 起家から反時計回りの順で記述します。
+                                - 増減の基準は局開始時ではなく、最後の{@link EventItem}の直後（複数人がロンした場合の2人目以降は、直前の和了者の点棒清算が終わった直後）とします。
+                        elements:
+                            type: int32
+                    player:
+                        metadata:
+                            description: どのプレイヤーが和了したかを示す数値です。
+                        type: int32
+                    winScore:
+                        metadata:
+                            description: 積み棒や供託を含めない純粋な和了点を示します。
+                        type: int32
+                    points:
+                        metadata:
+                            description: 符を示します。
+                        type: int32
+                    yakuList:
+                        metadata:
+                            description: 役と飜数を示す{@link YakuDoubles}の配列です。
+                        elements:
+                            ref: yakuDoubles
+                optionalProperties:
+                    from:
+                        metadata:
+                            description: どのプレイヤーからロンしたかを示す数値です。
+                            remarks: ツモ和がりの場合はこのプロパティを含めないようにします。
+                        type: int32
+                    pao:
+                        metadata:
+                            description: 責任払いの対象プレイヤーを示す数値です。
+                            remarks: 責任払いの対象プレイヤーがいない場合はこのプロパティを含めないようにします。
+                        type: int32
+            draw:
+                additionalProperties: true
+                metadata:
+                    typeName: GameResultDraw
+                    description: 流局を示す{@link GameResult}です。
+                properties:
+                    drawKind:
+                        metadata:
+                            description: 流局した理由を示す文字列です。
+                        ref: drawKind
+    playerMatchResult:
+        metadata:
+            description: プレイヤー名と半荘の結果を示します。
+        properties:
+            name:
+                metadata:
+                    description: プレイヤー名を示す文字列です。
+                type: string
+            score:
+                metadata:
+                    description: 点棒を示す数値です。
+                type: int32
+            income:
+                metadata:
+                    description: 清算ポイントを示す数値です。
+                type: int32
+            rank:
+                metadata:
+                    description: 順位を示す数値です。
+                    remarks: 0が1位、1が2位、...を示します。
+                type: int32
+    yakuDoubles:
+        additionalProperties: true
+        metadata:
+            typescriptOverride:
+                union:
+                    - properties:
+                        yakuId:
+                            metadata:
+                                description: 役のIDを示す数値です。`types/yaku.ts`に対応します。
+                                remarks: このプロパティかyakuのいずれかを指定する必要があります。
+                            type: int32
+                        doubles:
+                            metadata:
+                                description: 飜数を示す数値です。
+                                remarks: 役満には13、ダブル役満には26を指定します。
+                            type: int32
+                    - properties:
+                        yaku:
+                            metadata:
+                                description: 役名を示す文字列です。
+                                remarks: このプロパティかyakuIdのいずれかを指定する必要があります。
+                            type: string
+                        doubles:
+                            metadata:
+                                description: 飜数を示す数値です。
+                                remarks: 役満には13、ダブル役満には26を指定します。
+                            type: int32
+        properties:
+            doubles:
+                metadata:
+                    description: 飜数を示す数値です。
+                    remarks: 役満には13、ダブル役満には26を指定します。
+                type: int32
+        optionalProperties:
+            yakuId:
+                metadata:
+                    description: 役のIDを示す数値です。`types/yaku.ts`に対応します。
+                    remarks: このプロパティかyakuのいずれかを指定する必要があります。
+                type: int32
+            yaku:
+                metadata:
+                    description: 役名を示す文字列です。
+                    remarks: このプロパティかyakuIdのいずれかを指定する必要があります。
+                type: string
+additionalProperties: true
+metadata:
+    description: 1半荘を示します。
+properties:
+    id:
+        metadata:
+            description: MJsonを区別するための数値を示します。
+            remarks: 麻雀の内容には影響しません。
+        type: int32
+    players:
+        metadata:
+            description: 各プレイヤーの名前や結果を示す{@link PlayerMatchResult}の配列です。
+            remarks: 起家から反時計回りの順で記述します。
+        elements:
+            ref: playerMatchResult
+    games:
+        metadata:
+            description: それぞれの局を示す{@link Game}の配列です。
+            remarks: 東1局0本場から順に記述します。
+        elements:
+            ref: game
