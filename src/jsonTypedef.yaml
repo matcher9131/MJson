@@ -15,7 +15,8 @@ definitions:
         metadata:
             description: ツモ、打牌、鳴きなどの各行動を示す抽象タイプです。
             remarks: 共通プロパティ`k`によってどの種別なのかを判断できます。
-            discriminatorDescription: イベントタイプを指定する文字列です。
+            discriminatorDescription:
+                description: イベントタイプを指定する文字列です。
         discriminator: k
         mapping:
             d:
@@ -217,7 +218,8 @@ definitions:
         metadata:
             description: 1局の結果を示す抽象タイプです。
             remarks: 共通プロパティ`resultKind`によってどの種別なのかを判断できます。
-            discriminatorDescription: 1局の結果が何であるかを表す文字列です。
+            discriminatorDescription:
+                description: 1局の結果が何であるかを表す文字列です。
         discriminator: resultKind
         mapping:
             win:
