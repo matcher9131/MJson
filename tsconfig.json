@@ -8,8 +8,10 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "exactOptionalPropertyTypes": true,
         "skipLibCheck": true,
-        "moduleResolution": "Node"
+        "moduleResolution": "Node",
+        "resolveJsonModule": true
     },
     "include": ["src", "types"]
 }

@@ -41,6 +41,10 @@ export type Schema =
     | SchemaPrimitive
     | SchemaLiteralUnion;
 
+export type SchemaRoot = Schema & {
+    readonly definitions?: Record<string, Schema>;
+};
+
 export type MetadataDescription = {
     readonly description: string | readonly string[];
     readonly remarks?: string | readonly string[];
@@ -54,8 +58,10 @@ type MetadataTypeName = MetadataDescription & {
     readonly typeName: string;
 };
 
-type MetadataOverride = {
-    typescriptOverride: Schema | { union: readonly Schema[] };
+type MetadataOverride = MetadataDescription & {
+    readonly typescriptOverride: string;
 };
 
 export type Metadata = MetadataDescription | MetadataDiscriminatorDescription | MetadataTypeName | MetadataOverride;
+
+export type TypescriptOverride = { readonly union: readonly Schema[] };

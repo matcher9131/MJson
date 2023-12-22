@@ -1,5 +1,6 @@
 /**
  * プレイヤー名と半荘の結果を示します。
+ *
  * @interface
  */
 export type PlayerMatchResult = {
@@ -21,6 +22,7 @@ export type PlayerMatchResult = {
     /**
      * 順位を示す数値です。
      *
+     * @remarks
      * 0が1位、1が2位、...を示します。
      */
     readonly rank: number;

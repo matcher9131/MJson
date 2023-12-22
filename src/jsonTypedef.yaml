@@ -298,30 +298,8 @@ definitions:
     yakuDoubles:
         additionalProperties: true
         metadata:
-            typescriptOverride:
-                union:
-                    - properties:
-                        yakuId:
-                            metadata:
-                                description: 役のIDを示す数値です。`types/yaku.ts`に対応します。
-                                remarks: このプロパティかyakuのいずれかを指定する必要があります。
-                            type: int32
-                        doubles:
-                            metadata:
-                                description: 飜数を示す数値です。
-                                remarks: 役満には13、ダブル役満には26を指定します。
-                            type: int32
-                    - properties:
-                        yaku:
-                            metadata:
-                                description: 役名を示す文字列です。
-                                remarks: このプロパティかyakuIdのいずれかを指定する必要があります。
-                            type: string
-                        doubles:
-                            metadata:
-                                description: 飜数を示す数値です。
-                                remarks: 役満には13、ダブル役満には26を指定します。
-                            type: int32
+            description: 役と飜数を示します。
+            typescriptOverride: yakuDoubles
         properties:
             doubles:
                 metadata:
