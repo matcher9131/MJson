@@ -32,7 +32,7 @@ type OutputWithImports = {
 // propertyName: ... ; の配列を作る（TSDocあり）
 const createPropertySignatures = (
     properties: Record<string, Schema>,
-    overrideDictionary: Record<string, TypescriptOverride>,
+    overrideDictionary: Record<string, TypescriptOverride> | null,
     isOptional: boolean,
 ): OutputWithImports[] => {
     return Object.entries(properties).map(([key, childSchema]) => {
@@ -49,12 +49,12 @@ const createPropertySignatures = (
 // type Foo = ... や propertyName: ... の ... に相当する部分を作る（末尾セミコロン無し）
 const createTypeLiteral = (
     schema: Schema,
-    overrideDictionary: Record<string, TypescriptOverride>,
+    overrideDictionary: Record<string, TypescriptOverride> | null,
 ): OutputWithImports => {
-    if (schema.metadata != null && "typescriptOverride" in schema.metadata) {
-        // metadataがMetadataOverrideならそちらを優先する
+    if (overrideDictionary != null && schema.metadata != null && "typescriptOverride" in schema.metadata) {
+        // overrideDictionaryが指定されていて、かつmetadataがMetadataOverrideならそちらを優先する
         const overrideSchema = overrideDictionary[schema.metadata.typescriptOverride];
-        if (overrideSchema == null) throw new Error("Override schema is not found.");
+        if (overrideSchema == null) throw new Error("ERROR: Override schema is not found.");
         const typeLiterals = ("union" in overrideSchema ? overrideSchema.union : [overrideSchema]).map((childSchema) =>
             createTypeLiteral(childSchema, overrideDictionary),
         );
@@ -89,7 +89,7 @@ const createTypeLiteral = (
         };
     } else {
         // schemaはSchemaDiscriminatedUnionObject以外であるべき
-        throw new Error("Invalid schema");
+        throw new Error("ERROR: Invalid schema");
     }
 };
 
@@ -97,7 +97,7 @@ const createTypeLiteral = (
 const createTypeAliasDeclaration = (
     identifier: string,
     schema: Schema,
-    overrideDictionary: Record<string, TypescriptOverride>,
+    overrideDictionary: Record<string, TypescriptOverride> | null,
     needsInterfaceAnnotation: boolean,
 ): OutputWithImports => {
     const comment =
@@ -113,7 +113,7 @@ const createTypeAliasDeclaration = (
 const createDiscriminatedUnionObjectTypeAliasDeclarations = (
     identifier: string,
     schema: SchemaDiscriminatedUnionObject,
-    overrideDictionary: Record<string, TypescriptOverride>,
+    overrideDictionary: Record<string, TypescriptOverride> | null,
 ): OutputWithImports & { readonly types: readonly string[] } => {
     const baseComment = schema.metadata != null ? createComment(schema.metadata, false) : null;
     const typeAliasDeclarations = Object.entries(schema.mapping).map(([discriminatorValue, childSchema]) => {
@@ -161,14 +161,17 @@ const createDiscriminatedUnionObjectTypeAliasDeclarations = (
     };
 };
 
-const createTypescriptFiles = (
-    overrideDictionary: Record<string, TypescriptOverride>,
-    mJsonTypedef: SchemaRoot,
-): void => {
-    const modules = [
-        ["mJson", mJsonTypedef] as [string, Schema],
-        ...Object.entries(mJsonTypedef.definitions ?? {}),
-    ].map(([identifier, schema]) => {
+type Module = {
+    readonly filename: string;
+    readonly content: string;
+    readonly importTypes: readonly string[];
+    readonly exportTypes: readonly string[];
+};
+const createModules = (
+    keySchemaPair: ReadonlyArray<[string, Schema]>,
+    overrideDictionary: Record<string, TypescriptOverride> | null,
+): Module[] => {
+    return keySchemaPair.map(([identifier, schema]) => {
         if ("discriminator" in schema) {
             const { types, content, importTypes } = createDiscriminatedUnionObjectTypeAliasDeclarations(
                 identifier,
@@ -176,10 +179,10 @@ const createTypescriptFiles = (
                 overrideDictionary,
             );
             return {
-                importMapItems: types.map((type) => [type, identifier] as const),
+                filename: identifier,
                 content,
-                identifier,
                 importTypes,
+                exportTypes: types,
             };
         } else {
             const needsInterfaceAnnotation = "properties" in schema;
@@ -190,21 +193,25 @@ const createTypescriptFiles = (
                 needsInterfaceAnnotation,
             );
             return {
-                importMapItems: [[capitalize(identifier), identifier] as const],
+                filename: identifier,
                 content,
-                identifier,
                 importTypes,
+                exportTypes: [capitalize(identifier)],
             };
         }
     });
+};
 
-    const importMap = new Map(modules.flatMap(({ importMapItems }) => importMapItems));
+const generateModuleFiles = (modules: readonly Module[], directoryPath: string): void => {
+    const typeModuleDic = new Map(
+        modules.flatMap(({ filename, exportTypes }) => exportTypes.map((type) => [type, filename] as const)),
+    );
 
-    for (const { content, identifier, importTypes } of modules) {
-        const filepath = `types/${identifier}.ts`;
+    for (const { content, filename, importTypes } of modules) {
+        const filepath = `${directoryPath}/${filename}.ts`;
         const importDeclarationsMap = importTypes.reduce((map, importType) => {
-            const from = importMap.get(importType);
-            if (from == null) throw Error(`Import map does not contain '${importType}'`);
+            const from = typeModuleDic.get(importType);
+            if (from == null) throw Error(`ERROR: Import map does not contain '${importType}'`);
             const target = map.get(from);
             if (target == null) {
                 map.set(from, [importType]);
@@ -224,15 +231,46 @@ const createTypescriptFiles = (
     }
 };
 
-// TODO: typedoc用のファイル出力
-// const createDocument = (): void => {};
+// types用のTypeScriptファイルを作る
+const generateTypesFiles = (mJsonTypedef: SchemaRoot, overrideDictionary: Record<string, TypescriptOverride>): void => {
+    const modules = createModules(
+        [["mJson", mJsonTypedef] as [string, Schema], ...Object.entries(mJsonTypedef.definitions ?? {})],
+        overrideDictionary,
+    );
+    generateModuleFiles(modules, "types");
+};
 
-// import構文でJSONファイルを読み込むとBOMのせいでパースに失敗するので直にYAMLファイルを読み込む
-// （PowerShellでYAMLからJSONに変換すると文字エンコードが面倒くさいのでどのみちこっちのほうが良い）
-const overrideDictionary = yaml.load(fs.readFileSync("src/typescriptOverride.yaml", "utf8")) as Record<
-    string,
-    TypescriptOverride
->;
-const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
+// TypeDoc用のTypeScriptファイルを作る
+const generateTypeDocFiles = (mJsonTypedef: SchemaRoot): void => {
+    const modules = createModules(
+        [["mJson", mJsonTypedef] as [string, Schema], ...Object.entries(mJsonTypedef.definitions ?? {})],
+        null,
+    );
+    generateModuleFiles(modules, "src/doc");
 
-createTypescriptFiles(overrideDictionary, mJsonTypedef);
+    // index.tsを作る
+    const importDeclarations = modules
+        .map(
+            ({ filename, exportTypes }) =>
+                `import { ${exportTypes.map((type) => `type ${type}`).join(", ")} } from "./${filename}";`,
+        )
+        .join("\n");
+    const exportDeclaration = `export type { ${modules.flatMap(({ exportTypes }) => exportTypes).join(", ")} };`;
+    fs.writeFileSync("src/doc/index.ts", `${importDeclarations}\n${exportDeclaration}`);
+};
+
+const main = (): void => {
+    // import構文でJSONファイルを読み込むとBOMのせいでパースに失敗するので直にYAMLファイルを読み込む
+    // （PowerShellでYAMLからJSONに変換すると文字エンコードが面倒くさいのでどのみちこっちのほうが良い）
+    const overrideDictionary = yaml.load(fs.readFileSync("src/typescriptOverride.yaml", "utf8")) as Record<
+        string,
+        TypescriptOverride
+    >;
+    const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
+
+    generateTypesFiles(mJsonTypedef, overrideDictionary);
+
+    generateTypeDocFiles(mJsonTypedef);
+};
+
+main();

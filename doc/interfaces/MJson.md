@@ -20,6 +20,8 @@
 
 それぞれの局を示す[Game](Game.md)の配列です。
 
+**`Remarks`**
+
 東1局0本場から順に記述します。
 
 ___
@@ -30,14 +32,18 @@ ___
 
 MJsonを区別するための数値を示します。
 
+**`Remarks`**
+
 麻雀の内容には影響しません。
 
 ___
 
 ### players
 
-• `Readonly` **players**: readonly [`PlayerGameResult`](PlayerGameResult.md)[]
+• `Readonly` **players**: readonly [`PlayerMatchResult`](PlayerMatchResult.md)[]
 
-各プレイヤーの名前や結果を示す[PlayerGameResult](PlayerGameResult.md)の配列です。
+各プレイヤーの名前や結果を示す[PlayerMatchResult](PlayerMatchResult.md)の配列です。
+
+**`Remarks`**
 
 起家から反時計回りの順で記述します。

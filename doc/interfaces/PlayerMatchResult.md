@@ -1,6 +1,6 @@
-[MJson](../modules.md) / PlayerGameResult
+[MJson](../modules.md) / PlayerMatchResult
 
-# Interface: PlayerGameResult
+# Interface: PlayerMatchResult
 
 プレイヤー名と半荘の結果を示します。
 
@@ -8,10 +8,10 @@
 
 ### Properties
 
-- [income](PlayerGameResult.md#income)
-- [name](PlayerGameResult.md#name)
-- [rank](PlayerGameResult.md#rank)
-- [score](PlayerGameResult.md#score)
+- [income](PlayerMatchResult.md#income)
+- [name](PlayerMatchResult.md#name)
+- [rank](PlayerMatchResult.md#rank)
+- [score](PlayerMatchResult.md#score)
 
 ## Properties
 
@@ -36,6 +36,8 @@ ___
 • `Readonly` **rank**: `number`
 
 順位を示す数値です。
+
+**`Remarks`**
 
 0が1位、1が2位、...を示します。
 

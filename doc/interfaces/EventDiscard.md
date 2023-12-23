@@ -17,9 +17,13 @@
 
 ### isRiichi
 
-• `Optional` `Readonly` **isRiichi**: `boolean`
+• `Optional` `Readonly` **isRiichi**: `string`
 
 打牌時にリーチ宣言をしたかどうかを示します。
+
+**`Remarks`**
+
+このプロパティが省略されたときは`false`が指定されたものとします。
 
 ___
 
@@ -27,7 +31,7 @@ ___
 
 • `Readonly` **k**: ``"d"``
 
-イベントタイプを指定する文字列です。打牌には`"k"`を指定します。
+イベントタイプを指定する文字列です。
 
 ___
 

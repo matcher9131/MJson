@@ -5,7 +5,8 @@
   "type": "module",
   "description": "JSONをベースとした独自形式の牌譜フォーマットです。",
   "scripts": {
-    "run": "npx typedoc --options typedoc.config.json"
+    "types": "node --loader ts-node/esm src/index.ts && npx prettier --write types src/doc",
+    "doc": "npx typedoc --options typedoc.config.json src/doc/index.ts"
   },
   "author": "",
   "license": "MIT",

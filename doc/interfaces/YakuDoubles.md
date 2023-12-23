@@ -16,9 +16,11 @@
 
 ### doubles
 
-• **doubles**: `number`
+• `Readonly` **doubles**: `number`
 
 飜数を示す数値です。
+
+**`Remarks`**
 
 役満には13、ダブル役満には26を指定します。
 
@@ -26,18 +28,22 @@ ___
 
 ### yaku
 
-• `Optional` **yaku**: `string`
+• `Optional` `Readonly` **yaku**: `string`
 
 役名を示す文字列です。
 
-このプロパティか[yakuId](YakuDoubles.md#yakuid)のいずれかを指定する必要があります。
+**`Remarks`**
+
+このプロパティかyakuIdのいずれかを指定する必要があります。
 
 ___
 
 ### yakuId
 
-• `Optional` **yakuId**: `number`
+• `Optional` `Readonly` **yakuId**: `number`
 
 役のIDを示す数値です。`types/yaku.ts`に対応します。
 
-このプロパティか[yaku](YakuDoubles.md#yaku)のいずれかを指定する必要があります。
+**`Remarks`**
+
+このプロパティかyakuのいずれかを指定する必要があります。
