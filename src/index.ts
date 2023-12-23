@@ -161,17 +161,14 @@ const createDiscriminatedUnionObjectTypeAliasDeclarations = (
     };
 };
 
-const main = (): void => {
-    // import構文でJSONファイルを読み込むとBOMのせいでパースに失敗するので直にYAMLファイルを読み込む
-    // （PowerShellでYAMLからJSONに変換すると文字エンコードが面倒くさいのでどのみちこっちのほうが良い）
-    const overrideDictionary = yaml.load(fs.readFileSync("src/typescriptOverride.yaml", "utf8")) as Record<
-        string,
-        TypescriptOverride
-    >;
-    const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
-
-    // TODO: 本体のスキーマが置いてけぼりになっているのを直す
-    const modules = Object.entries(mJsonTypedef.definitions ?? {}).map(([identifier, schema]) => {
+const createTypescriptFiles = (
+    overrideDictionary: Record<string, TypescriptOverride>,
+    mJsonTypedef: SchemaRoot,
+): void => {
+    const modules = [
+        ["mJson", mJsonTypedef] as [string, Schema],
+        ...Object.entries(mJsonTypedef.definitions ?? {}),
+    ].map(([identifier, schema]) => {
         if ("discriminator" in schema) {
             const { types, content, importTypes } = createDiscriminatedUnionObjectTypeAliasDeclarations(
                 identifier,
@@ -205,20 +202,37 @@ const main = (): void => {
 
     for (const { content, identifier, importTypes } of modules) {
         const filepath = `types/${identifier}.ts`;
-        const importDeclarations = importTypes.map((importType) => {
-            // TODO: 'import type'を使う
-            // TODO: 同じファイルからのimportをまとめる
+        const importDeclarationsMap = importTypes.reduce((map, importType) => {
             const from = importMap.get(importType);
             if (from == null) throw Error(`Import map does not contain '${importType}'`);
-            return `import { ${importType} } from "./${from}";`;
-        });
+            const target = map.get(from);
+            if (target == null) {
+                map.set(from, [importType]);
+            } else {
+                target.push(importType);
+            }
+            return map;
+        }, new Map<string, string[]>());
+        const importDeclarations = [...importDeclarationsMap.entries()].map(
+            ([from, importTypes]) =>
+                `import { ${importTypes.map((type) => `type ${type}`).join(", ")} } from "./${from}";`,
+        );
         fs.writeFileSync(
             filepath,
             importDeclarations.length > 0 ? `${importDeclarations.join("\n")}\n\n${content}` : content,
         );
     }
-
-    // TODO: typedoc用のファイル出力
 };
 
-main();
+// TODO: typedoc用のファイル出力
+// const createDocument = (): void => {};
+
+// import構文でJSONファイルを読み込むとBOMのせいでパースに失敗するので直にYAMLファイルを読み込む
+// （PowerShellでYAMLからJSONに変換すると文字エンコードが面倒くさいのでどのみちこっちのほうが良い）
+const overrideDictionary = yaml.load(fs.readFileSync("src/typescriptOverride.yaml", "utf8")) as Record<
+    string,
+    TypescriptOverride
+>;
+const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
+
+createTypescriptFiles(overrideDictionary, mJsonTypedef);

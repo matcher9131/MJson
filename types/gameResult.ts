@@ -1,5 +1,5 @@
-import { YakuDoubles } from "./yakuDoubles";
-import { DrawKind } from "./drawKind";
+import { type YakuDoubles } from "./yakuDoubles";
+import { type DrawKind } from "./drawKind";
 
 /**
  * 1局の結果を示す抽象タイプです。

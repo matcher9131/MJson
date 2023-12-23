@@ -1,5 +1,5 @@
-import { EventItem } from "./eventItem";
-import { GameResult } from "./gameResult";
+import { type EventItem } from "./eventItem";
+import { type GameResult } from "./gameResult";
 
 /**
  * 1局を示します。

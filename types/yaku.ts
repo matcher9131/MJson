@@ -1,4 +1,4 @@
-const yakuList = [
+export const yakuList = [
     // 一飜
     "門前清自摸和", // 0
     "立直", // 1
