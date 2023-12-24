@@ -1,3 +1,5 @@
+// Schemaの種類によって持たせたいMetadataが変わるので、jtdで定義されたものは使わない
+
 export type SchemaBase = {
     readonly metadata?: Metadata;
 };

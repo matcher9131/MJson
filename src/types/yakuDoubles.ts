@@ -6,7 +6,7 @@
 export type YakuDoubles =
     | {
           /**
-           * 役のIDを示す数値です。`types/yaku.ts`に対応します。
+           * 役のIDを示す数値です。`src/types/yaku.ts`に対応します。
            *
            * @remarks
            * このプロパティかyakuのいずれかを指定する必要があります。

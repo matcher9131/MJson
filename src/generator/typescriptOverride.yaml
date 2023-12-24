@@ -3,7 +3,7 @@ yakuDoubles:
         - properties:
             yakuId:
                 metadata:
-                    description: 役のIDを示す数値です。`types/yaku.ts`に対応します。
+                    description: 役のIDを示す数値です。`src/types/yaku.ts`に対応します。
                     remarks: このプロパティかyakuのいずれかを指定する必要があります。
                 type: int32
             doubles:
