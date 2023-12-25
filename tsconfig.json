@@ -13,5 +13,6 @@
         "moduleResolution": "Node",
         "resolveJsonModule": true
     },
-    "include": ["src", "types", "tests"]
+    "include": ["src", "types", "tests"],
+    "exclude": ["dist"]
 }

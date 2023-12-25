@@ -1,14 +1,18 @@
 {
   "name": "mjson",
-  "version": "1.0.0",
-  "type": "module",
+  "version": "0.1.0",
   "description": "JSONをベースとした独自形式の牌譜フォーマットです。",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
   "scripts": {
     "generate": "node --loader ts-node/esm src/generator/main.ts && npx prettier --write src",
     "doc": "npx typedoc --options typedoc.config.json src/generator/doc/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
     "test": "npx vitest run"
   },
-  "author": "",
+  "author": "matcher",
   "license": "MIT",
   "devDependencies": {
     "@microsoft/tsdoc": "^0.14.2",

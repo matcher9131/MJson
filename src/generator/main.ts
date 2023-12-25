@@ -271,7 +271,7 @@ const main = (): void => {
     >;
     const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
 
-    fs.writeFileSync("src/jsonTypedef.json", JSON.stringify(mJsonTypedef, undefined, 4));
+    fs.writeFileSync("json-typedef/jsonTypedef.json", JSON.stringify(mJsonTypedef, undefined, 4));
 
     generateTypeFiles(mJsonTypedef, overrideDictionary);
 
