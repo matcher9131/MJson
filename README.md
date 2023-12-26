@@ -1,4 +1,4 @@
-日本語のREADMEは[こちら](README.ja.md)
+日本語のREADMEは[こちら](https://github.com/matcher9131/MJson/blob/main/README.ja.md)
 
 # MJson
 
@@ -30,19 +30,27 @@ yarn add -dev @matcher9131/mjson
 
 You can use MJson as typed variant by importing type.
 
-```typescript
-import { MJson } from "mjson";
+```ts
+import { MJson } from "@matcher9131/mjson";
 import data from "./foo.json"; // Import MJson file you like
 
 const mJson = data as MJson;
 console.log(mJson.players[0].name);
 ```
 
-## Validation 
-```javascript
+## Validation
 
+Example: Validate MJson by jtd on Node.js
+
+```js
+import { validate } from "jtd";
+import schema from "@matcher9131/mjson/jsonTypedef" assert { type: "json" };
+import data from "./foo.json" assert { type: "json" }; // Import MJson file you like
+
+const errors = validate(schema, data);
+console.log(`Number of errors: ${errors.length}`);
 ```
 
 # Documentation
 
-[Type definition](doc/modules.md) (Sorry, available only in Japanese currently)
+[Type definition](https://github.com/matcher9131/MJson/blob/main/doc/modules.md) (Sorry, available only in Japanese currently)
