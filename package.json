@@ -1,6 +1,6 @@
 {
   "name": "@matcher9131/mjson",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JSONをベースとした独自形式の牌譜フォーマットです。",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
