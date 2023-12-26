@@ -243,7 +243,9 @@ const generateTypeFiles = (mJsonTypedef: SchemaRoot, overrideDictionary: Record<
     // index.ts
     const body = [
         ...modules.map(({ filename }) => `export * from "./types/${filename}";`),
-        `export * from "./types/yaku"`,
+        `export * from "./types/yaku";`,
+        `import schema from "./jsonTypedef.json";`,
+        `export const jsonTypedefSchema = schema;`,
     ].join("\n");
     fs.writeFileSync("src/index.ts", body);
 };
@@ -271,7 +273,7 @@ const main = (): void => {
     >;
     const mJsonTypedef = yaml.load(fs.readFileSync("src/jsonTypedef.yaml", "utf8")) as SchemaRoot;
 
-    fs.writeFileSync("json-typedef/jsonTypedef.json", JSON.stringify(mJsonTypedef, undefined, 4));
+    fs.writeFileSync("src/jsonTypedef.json", JSON.stringify(mJsonTypedef, undefined, 4));
 
     generateTypeFiles(mJsonTypedef, overrideDictionary);
 
