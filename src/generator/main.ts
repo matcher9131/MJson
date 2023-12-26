@@ -244,8 +244,6 @@ const generateTypeFiles = (mJsonTypedef: SchemaRoot, overrideDictionary: Record<
     const body = [
         ...modules.map(({ filename }) => `export * from "./types/${filename}";`),
         `export * from "./types/yaku";`,
-        `import schema from "./jsonTypedef.json";`,
-        `export const jsonTypedefSchema = schema;`,
     ].join("\n");
     fs.writeFileSync("src/index.ts", body);
 };
