@@ -17,7 +17,7 @@
 
 ### isRiichi
 
-• `Optional` `Readonly` **isRiichi**: `string`
+• `Optional` `Readonly` **isRiichi**: `boolean`
 
 打牌時にリーチ宣言をしたかどうかを示します。
 

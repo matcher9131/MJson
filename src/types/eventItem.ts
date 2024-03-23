@@ -40,7 +40,7 @@ export type EventDiscard = {
      * @remarks
      * このプロパティが省略されたときは`false`が指定されたものとします。
      */
-    readonly isRiichi?: string;
+    readonly isRiichi?: boolean;
 };
 
 /**

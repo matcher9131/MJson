@@ -28,7 +28,7 @@ export type SchemaArray = SchemaBase & {
 };
 
 export type SchemaPrimitive = SchemaBase & {
-    readonly type: "int32" | "string";
+    readonly type: "int32" | "boolean" | "string";
 };
 
 export type SchemaLiteralUnion = SchemaBase & {

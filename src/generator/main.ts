@@ -64,7 +64,10 @@ const createTypeLiteral = (
         };
     } else if ("type" in schema) {
         // SchemaPrimitive
-        return { content: schema.type === "int32" ? "number" : "string", importTypes: [] };
+        return {
+            content: schema.type === "int32" ? "number" : schema.type === "boolean" ? "boolean" : "string",
+            importTypes: [],
+        };
     } else if ("ref" in schema) {
         // SchemaRef
         const refType = capitalize(schema.ref);
